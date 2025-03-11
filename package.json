@@ -6,7 +6,8 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "npm install @types/react @types/node @types/react-dom"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
