@@ -116,4 +116,5 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-} 
+}
+export default Table; 

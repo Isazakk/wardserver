@@ -25,4 +25,5 @@ const Slider = React.forwardRef<
 ))
 Slider.displayName = SliderPrimitive.Root.displayName
 
-export { Slider } 
+export { Slider }
+export default Slider; 

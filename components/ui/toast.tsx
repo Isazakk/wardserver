@@ -125,4 +125,5 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
-} 
+}
+export default Toast; 

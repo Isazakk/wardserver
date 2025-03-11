@@ -108,6 +108,40 @@ const SelectSeparator = React.forwardRef<
 ))
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 
+const SelectScrollUpButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.ScrollUpButton
+    ref={ref}
+    className={cn(
+      "flex h-6 w-6 items-center justify-center text-muted-foreground",
+      className
+    )}
+    {...props}
+  >
+    {children}
+  </SelectPrimitive.ScrollUpButton>
+))
+SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
+
+const SelectScrollDownButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.ScrollDownButton
+    ref={ref}
+    className={cn(
+      "flex h-6 w-6 items-center justify-center text-muted-foreground",
+      className
+    )}
+    {...props}
+  >
+    {children}
+  </SelectPrimitive.ScrollDownButton>
+))
+SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName
+
 export {
   Select,
   SelectGroup,
@@ -117,4 +151,7 @@ export {
   SelectLabel,
   SelectItem,
   SelectSeparator,
-} 
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+}
+export default Select; 
