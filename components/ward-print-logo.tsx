@@ -29,3 +29,5 @@ export function WardPrintLogo({
   return LogoContent
 }
 
+export default WardPrintLogo;
+

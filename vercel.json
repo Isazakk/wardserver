@@ -1,5 +1,6 @@
 {
   "version": 2,
-  "ignoreCommand": "echo skip ignorance",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "ignoreCommand": "echo skip ignorance"
 } 

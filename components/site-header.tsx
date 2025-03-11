@@ -189,3 +189,5 @@ export function SiteHeader({ navItems, showAuth = true, showOrdersDropdown = fal
     </header>
   )
 }
+
+export default SiteHeader;

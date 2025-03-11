@@ -53,3 +53,5 @@ export function ModelViewer({ modelUrl }: ModelViewerProps) {
   )
 }
 
+export default ModelViewer;
+

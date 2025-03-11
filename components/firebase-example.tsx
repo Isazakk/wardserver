@@ -133,4 +133,6 @@ export function FirebaseExample() {
       </CardFooter>
     </Card>
   );
-} 
+}
+
+export default FirebaseExample; 

@@ -10,4 +10,5 @@ export { default as OrderProcess } from './order-process';
 export { default as ModelViewer } from './model-viewer';
 export { default as ModelAdjuster } from './model-adjuster';
 export { default as ThemeProvider } from './theme-provider';
-export { default as WardPrintLogo } from './ward-print-logo'; 
+export { default as WardPrintLogo } from './ward-print-logo';
+export { default as FirebaseExample } from './firebase-example'; 

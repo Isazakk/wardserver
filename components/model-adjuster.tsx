@@ -70,4 +70,6 @@ export function ModelAdjuster({ onAdjust }: ModelAdjusterProps) {
       </CardContent>
     </Card>
   )
-} 
+}
+
+export default ModelAdjuster; 
