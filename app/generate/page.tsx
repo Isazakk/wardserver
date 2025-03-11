@@ -28,6 +28,9 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { useModelGeneration } from '@/hooks/use-model-generation'
+import { ModelViewer } from '@/components/model-viewer'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 function Model({ url }: { url: string }) {
   const { scene } = useGLTF(url)
@@ -35,20 +38,22 @@ function Model({ url }: { url: string }) {
 }
 
 export default function GeneratePage() {
+  const [prompt, setPrompt] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const { isLoading, error, result, generateFromText, generateFromImage } = useModelGeneration()
   const [generationMethod, setGenerationMethod] = useState<"text" | "image">("text")
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [generationProgress, setGenerationProgress] = useState(0)
-  const [modelGenerated, setModelGenerated] = useState(false)
+  const [isGenerating, setIsGenerating] = useState<boolean>(false)
+  const [generationProgress, setGenerationProgress] = useState<number>(0)
+  const [modelGenerated, setModelGenerated] = useState<boolean>(false)
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState<string>("")
-  const [selectedColor, setSelectedColor] = useState<string>("grey")
+  const [selectedColor, setSelectedColor] = useState<string>("")
   const [price, setPrice] = useState<number>(0)
   const [modelUrl, setModelUrl] = useState<string | null>(null)
   const [isAdjusting, setIsAdjusting] = useState(false)
   const [isOrdering, setIsOrdering] = useState(false)
   const [adjustedPrice, setAdjustedPrice] = useState<number>(0)
-  const [prompt, setPrompt] = useState<string>("")
-  const [queueCount, setQueueCount] = useState(0)
+  const [queueCount] = useState<number>(3) // Mock queue count
   const [validationWarning, setValidationWarning] = useState<string | null>(null)
 
   // Resin color options with individual images
@@ -132,47 +137,16 @@ export default function GeneratePage() {
     setValidationWarning(null)
   }
 
-  const generateModel = async () => {
-    if (!isFormValid()) {
-      checkFormAndShowWarning()
-      return
-    }
+  const handleTextGeneration = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!prompt.trim()) return
+    await generateFromText(prompt)
+  }
 
-    setValidationWarning(null)
-    setIsGenerating(true)
-    setGenerationProgress(0)
-    setModelGenerated(false)
-
-    try {
-      // Mock API call with setTimeout to simulate network request
-      setTimeout(() => {
-        let progress = 0
-        const interval = setInterval(() => {
-          progress += 10
-          setGenerationProgress(Math.min(progress, 100))
-
-          if (progress >= 100) {
-            clearInterval(interval)
-            // Use a sample 3D model URL
-            setModelUrl("/assets/3d/duck.glb")
-            setModelGenerated(true)
-            setIsGenerating(false)
-            toast({
-              title: "Model generated successfully",
-              description: "Your 3D model is ready for viewing and ordering.",
-            })
-          }
-        }, 500)
-      }, 1000)
-    } catch (error) {
-      console.error("Error generating model:", error)
-      toast({
-        title: "Error generating model",
-        description: "An error occurred while generating the model.",
-        variant: "destructive",
-      })
-      setIsGenerating(false)
-    }
+  const handleImageGeneration = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!imageUrl.trim()) return
+    await generateFromImage(imageUrl)
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -219,12 +193,14 @@ export default function GeneratePage() {
 
   const navItems = [
     { title: "Home", href: "/" },
-    { title: "Pricing", href: "/#pricing" },
+    { title: "Gallery", href: "/gallery" },
+    { title: "Pricing", href: "/pricing" },
+    { title: "About", href: "/about" },
   ]
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <SiteHeader navItems={navItems} showThemeToggle={false} />
+      <SiteHeader navItems={navItems} showOrdersDropdown />
       <main
         className="flex-1 py-10 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
         style={{
@@ -524,7 +500,7 @@ export default function GeneratePage() {
                       )}
                     ></div>
                     <Button
-                      onClick={generateModel}
+                      onClick={handleTextGeneration}
                       className={cn(
                         "relative w-full bg-black text-white hover:bg-gray-800 font-medium transition-all duration-200 transform hover:shadow-lg",
                         isFormValid()

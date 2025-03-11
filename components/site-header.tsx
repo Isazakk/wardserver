@@ -11,36 +11,21 @@ import { cn } from "@/lib/utils"
 interface NavItem {
   title: string
   href: string
-  external?: boolean
 }
 
 interface SiteHeaderProps {
-  navItems?: NavItem[]
+  navItems: NavItem[]
   showAuth?: boolean
-  showThemeToggle?: boolean
-  showWorkspaceButton?: boolean
   showOrdersDropdown?: boolean
-  className?: string
+  showThemeToggle?: boolean
 }
 
-export function SiteHeader({
-  navItems = [
-    { title: "Home", href: "/" },
-    { title: "Features", href: "/#features" },
-    { title: "Pricing", href: "/#pricing" },
-    { title: "How It Works", href: "/#how-it-works" },
-  ],
-  showAuth = true,
-  showThemeToggle = true,
-  showWorkspaceButton = true,
-  showOrdersDropdown = false,
-  className,
-}: SiteHeaderProps) {
+export function SiteHeader({ navItems, showAuth = true, showOrdersDropdown = false, showThemeToggle = true }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   // Theme toggle removed
 
   return (
-    <header className={cn("sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm", className)}>
+    <header className={cn("sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm")}>
       <div className="container flex h-16 items-center">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
@@ -51,33 +36,6 @@ export function SiteHeader({
           </Link>
         </div>
 
-        {showWorkspaceButton && (
-          <Link href="/workspace" className="relative group hidden sm:block ml-2 mr-auto">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-900 via-blue-600 to-blue-400 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200"></div>
-            <div className="relative px-5 py-2 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg leading-none flex items-center">
-              <span className="text-blue-100 font-semibold flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 mr-1"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                Workspace
-              </span>
-              <svg className="h-3 w-3 ml-1 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </Link>
-        )}
-
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-6 mx-auto">
           {navItems.map((item) => (
@@ -85,8 +43,6 @@ export function SiteHeader({
               key={item.href}
               href={item.href}
               className="text-sm font-medium hover:text-primary transition-colors"
-              target={item.external ? "_blank" : undefined}
-              rel={item.external ? "noopener noreferrer" : undefined}
             >
               {item.title}
             </Link>
@@ -165,31 +121,17 @@ export function SiteHeader({
       {mobileMenuOpen && (
         <div className="md:hidden bg-background border-b">
           <div className="container py-4 space-y-4">
-            {showWorkspaceButton && (
-              <Link href="/workspace" className="relative group block mb-4">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-900 via-blue-600 to-blue-400 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200"></div>
-                <div className="relative px-5 py-3 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg leading-none flex items-center justify-center">
-                  <span className="text-blue-100 font-semibold flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-2"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                      <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg>
-                    Workspace
-                  </span>
-                  <svg className="h-3 w-3 ml-2 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </Link>
+            {showAuth && (
+              <div className="flex flex-col space-y-2 pt-2 border-t">
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full bg-white text-black hover:bg-gray-100 border border-gray-300">
+                    Log In
+                  </Button>
+                </Link>
+                <Link href="/generate" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full bg-black text-white hover:bg-gray-800">Get Started</Button>
+                </Link>
+              </div>
             )}
 
             <nav className="flex flex-col space-y-4">
@@ -241,22 +183,9 @@ export function SiteHeader({
                 </div>
               )}
             </nav>
-            {showAuth && (
-              <div className="flex flex-col space-y-2 pt-2 border-t">
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-white text-black hover:bg-gray-100 border border-gray-300">
-                    Log In
-                  </Button>
-                </Link>
-                <Link href="/generate" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-black text-white hover:bg-gray-800">Get Started</Button>
-                </Link>
-              </div>
-            )}
           </div>
         </div>
       )}
     </header>
   )
 }
-

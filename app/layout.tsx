@@ -1,12 +1,18 @@
-import type React from "react"
-import "./globals.css"
 import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { inter, orbitron, spaceGrotesk } from "./fonts"
+import { Toaster } from "@/components/ui/toaster"
+import { FirebaseProvider } from "@/lib/firebase/context"
+
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Ward 3D Prints - AI-Powered 3D Model Generation and Printing",
-  description: "Generate 3D models with Meshy AI and have them printed and delivered to your doorstep.",
+  title: "Ward 3D Prints",
+  description: "AI-Powered 3D Model Generation and Printing",
+  icons: {
+    icon: "/favicon.ico",
+  },
 }
 
 export default function RootLayout({
@@ -15,15 +21,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`dark ${inter.variable} ${orbitron.variable} ${spaceGrotesk.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
-          {children}
-        </ThemeProvider>
+        <FirebaseProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </FirebaseProvider>
       </body>
     </html>
   )

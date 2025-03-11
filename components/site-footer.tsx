@@ -90,3 +90,4 @@ export function SiteFooter() {
   )
 }
 
+export default SiteFooter
